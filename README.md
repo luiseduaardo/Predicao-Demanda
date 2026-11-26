@@ -27,7 +27,8 @@ Os arquivos CSV não são versionados. Coloque-os em `data/raw/`.
 ├── data/
 │   ├── raw/          # CSVs originais (não versionados)
 │   └── processed/    # dados tratados
-├── notebooks/        # análises e modelos
+├── notebooks/        # análises e preparo dos dados
+├── models/           # modelos e rastreamento de experimentos (ver models/README.md)
 ├── SPECIFICATIONS.md # enunciado do desafio
 ├── requirements.txt
 └── LICENSE
