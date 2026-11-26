@@ -224,3 +224,6 @@ __marimo__/
 
 # Project general especifications
 SPECIFICATIONS.md
+# Experimentos (models/)
+models/runs/
+wandb/

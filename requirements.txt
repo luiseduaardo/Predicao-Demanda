@@ -1,7 +1,14 @@
 jupyter
 ipykernel
+
 pandas
 numpy
+
 scikit-learn
+
 matplotlib
 seaborn
+
+# Experimentos
+wandb
+optuna
