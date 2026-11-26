@@ -3,6 +3,7 @@ from datetime import datetime
 
 import optuna
 
+from carregar_dados import DATASETS
 from experimento import rodar
 from modelos import MODELOS
 
@@ -13,7 +14,7 @@ def otimizar(modelo: str, n_trials: int = 20, metrica: str = "rmse", dataset: st
     if not callable(MODELOS[modelo].get("espaco")):
         raise ValueError(f"Modelo '{modelo}' não tem espaço de busca de hiperparâmetros; use experimento.py.")
 
-    grupo = f"otimizacao_{modelo}_{datetime.now():%Y%m%d_%H%M%S}"   # junta as tentativas no W&B
+    grupo = f"otimizacao_{modelo}_{dataset}_{datetime.now():%Y%m%d_%H%M%S}"   # junta as tentativas no W&B
     direcao = "maximize" if metrica.startswith("r2") else "minimize"
 
     def objetivo(trial):
@@ -33,7 +34,7 @@ if __name__ == "__main__":
     p.add_argument("modelo")
     p.add_argument("--n_trials", type=int, default=20)
     p.add_argument("--metrica", default="rmse")
-    p.add_argument("--dataset")
+    p.add_argument("--dataset", default="imputado", choices=DATASETS)
     a = p.parse_args()
 
     otimizar(a.modelo, a.n_trials, a.metrica, a.dataset)

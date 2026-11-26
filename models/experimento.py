@@ -1,12 +1,12 @@
+import argparse
 import json
-import sys
 from datetime import datetime
 from pathlib import Path
 
 import joblib
 import wandb
 
-from carregar_dados import carregar
+from carregar_dados import DATASETS, carregar
 from metricas import regression_metrics
 from modelos import MODELOS
 
@@ -51,6 +51,9 @@ def rodar(modelo: str, params: dict | None = None, dataset: str = "imputado", gr
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        raise SystemExit("Uso: python models/experimento.py <modelo>")
-    rodar(sys.argv[1])
+    p = argparse.ArgumentParser()
+    p.add_argument("modelo")
+    p.add_argument("--dataset", default="imputado", choices=DATASETS)
+    a = p.parse_args()
+
+    rodar(a.modelo, dataset=a.dataset)

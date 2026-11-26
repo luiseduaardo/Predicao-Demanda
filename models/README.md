@@ -49,13 +49,15 @@ pip install -r requirements.txt
 #### Treinamento com os parâmetros padrão
 
 ```bash
-python models/experimento.py baseline
+python models/experimento.py baseline                          # dataset imputado (padrão)
+python models/experimento.py baseline --dataset sem_faltantes
 ```
 
 #### Tunagem dos hiperparâmetros
 
 ```bash
 python models/otimizar.py elasticnet --n_trials 20
+python models/otimizar.py elasticnet --n_trials 20 --dataset sem_faltantes
 ```
 
 #### Teste final com base no ID
@@ -80,4 +82,4 @@ Por padrão `MODO_WANDB = "online"`, então rode `wandb login` antes. Para traba
 
 ## Dados
 
-Os modelos usam as versões de `data/processed/` geradas no notebook 4. O padrão é `imputado`. Use `sem_faltantes` com `rodar(..., dataset="sem_faltantes")` ou `--dataset sem_faltantes`.
+Os modelos usam as versões de `data/processed/` geradas no notebook 4. O padrão é `imputado`. Use `sem_faltantes` com `--dataset sem_faltantes` no terminal ou `rodar(..., dataset="sem_faltantes")` no código. Sem essa opção, tudo roda no `imputado`.
