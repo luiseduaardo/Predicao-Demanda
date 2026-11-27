@@ -22,7 +22,7 @@ A arquitetura dessa modelagem consiste em:
 2. Calcula as métricas no treino e na validação.
 3. Envia hiperparâmetros e métricas ao W&B, e salva `modelo.joblib` e `config.json` em `models/runs/<run_id>/`.
 4. `otimizar` repete isso várias vezes, deixando o Optuna escolher os hiperparâmetros de cada tentativa. As tentativas ficam agrupadas no W&B, cada uma como uma run.
-5. Ao final, `otimizar` marca a melhor run com a tag `best` no W&B (modo online) e imprime o `run_id` dela, para usar no `testar.py`. O `run_id` de cada trial também fica em `estudo.trials[i].user_attrs["run_id"]`.
+5. Ao final, `otimizar` marca a melhor run com a tag `best` no W&B (modo online) e guarda o `run_id` dela para usar no `testar.py` (pelo terminal ele é impresso no fim; no notebook, veja `estudo.best_trial.user_attrs["run_id"]`). O progresso aparece como uma linha por trial no terminal, ou como um bloco que se atualiza no notebook; as mensagens do W&B ficam silenciadas.
 
 ## Uso
 

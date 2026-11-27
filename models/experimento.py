@@ -15,7 +15,8 @@ MODO_WANDB = "offline"
 PASTA_RUNS = Path(__file__).resolve().parent / "runs"
 
 
-def rodar(modelo: str, params: dict | None = None, dataset: str = "imputado", grupo: str | None = None) -> dict:
+def rodar(modelo: str, params: dict | None = None, dataset: str = "imputado", grupo: str | None = None,
+          verbose: bool = True) -> dict:
     """Treina e registra uma run. Devolve {"run_id", "wandb_id", "validacao"}."""
     if modelo not in MODELOS:
         raise ValueError(f"Modelo '{modelo}' não encontrado")
@@ -26,9 +27,12 @@ def rodar(modelo: str, params: dict | None = None, dataset: str = "imputado", gr
     pasta.mkdir(parents=True, exist_ok=True)
 
     config = {"modelo": modelo, "dataset": dataset, "params": params}
-    run = wandb.init(project=PROJETO_WANDB, name=run_id, group=grupo, tags=[dataset, modelo],
-                 mode=MODO_WANDB, dir=str(PASTA_RUNS), config=config)
     
+    # tira as mensagens do W&B
+    settings = wandb.Settings(silent=True, x_disable_stats=True, x_disable_meta=True)
+    run = wandb.init(project=PROJETO_WANDB, name=run_id, group=grupo, tags=[dataset, modelo],
+                     mode=MODO_WANDB, dir=str(PASTA_RUNS), config=config, settings=settings)
+
     try:
         X, y, y_unidades = carregar(dataset, "treino")
         X_val, y_val, y_val_unidades = carregar(dataset, "validacao")
@@ -44,7 +48,8 @@ def rodar(modelo: str, params: dict | None = None, dataset: str = "imputado", gr
 
         joblib.dump(estimador, pasta / "modelo.joblib")
         (pasta / "config.json").write_text(json.dumps(config, indent=2))
-        print(f"[{run_id}] validação: " + "  ".join(f"{k}={v:.4f}" for k, v in validacao.items()))
+        if verbose:
+            print(f"[{run_id}] validação: " + "  ".join(f"{k}={v:.4f}" for k, v in validacao.items()))
         wandb_id = run.id
     finally:
         run.finish()
