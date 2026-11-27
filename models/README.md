@@ -18,10 +18,11 @@ A arquitetura dessa modelagem consiste em:
 
 ## Como funciona
 
-1. `rodar("ridge", {"alpha": 1.0})` lê os dados, cria o modelo com esses hiperparâmetros e o treina.
+1. `rodar(modelo, {hiperparâmetros})` lê os dados, cria o modelo com esses hiperparâmetros e o treina.
 2. Calcula as métricas no treino e na validação.
 3. Envia hiperparâmetros e métricas ao W&B, e salva `modelo.joblib` e `config.json` em `models/runs/<run_id>/`.
-4. `otimizar` repete isso várias vezes, deixando o Optuna escolher os hiperparâmetros de cada tentativa. As tentativas ficam agrupadas no W&B.
+4. `otimizar` repete isso várias vezes, deixando o Optuna escolher os hiperparâmetros de cada tentativa. As tentativas ficam agrupadas no W&B, cada uma como uma run.
+5. Ao final, `otimizar` marca a melhor run com a tag `best` no W&B (modo online) e imprime o `run_id` dela, para usar no `testar.py`. O `run_id` de cada trial também fica em `estudo.trials[i].user_attrs["run_id"]`.
 
 ## Uso
 
