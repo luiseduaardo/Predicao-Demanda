@@ -11,7 +11,7 @@ from metricas import regression_metrics
 from modelos import MODELOS
 
 PROJETO_WANDB = "predicao-demanda"
-MODO_WANDB = "offline"
+MODO_WANDB = "online"
 PASTA_RUNS = Path(__file__).resolve().parent / "runs"
 
 
