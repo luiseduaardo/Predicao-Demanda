@@ -1,5 +1,6 @@
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
 
 from sklearn.ensemble import HistGradientBoostingRegressor, RandomForestRegressor
 from sklearn.linear_model import ElasticNet, LinearRegression
@@ -27,9 +28,13 @@ MODELOS = {
 
     # Baseline regularizado
     "elasticnet": {
-        "criar": lambda p: ElasticNet(
-            max_iter=20_000,
-            **p
+        "criar": lambda p: make_pipeline(
+            StandardScaler(),
+            ElasticNet(
+                max_iter=20_000,
+                random_state=SEED,
+                **p
+            )
         ),
         "params": {
             "alpha": 0.1,
